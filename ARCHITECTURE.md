@@ -102,6 +102,90 @@ None of this generates new power. It captures what would have been lost and deli
 
 ---
 
+## The Engine Model
+
+The turbocharger framing above is functional but incomplete. It describes the boost loop — how compressed context gets from one session to the next. It doesn't describe the engine itself. This section does.
+
+The mapping is not metaphorical. It's structural. Where the architecture maps 1:1 to an internal combustion engine, it's stated directly. Where it breaks, the break is documented. Forced mappings are worse than gaps.
+
+### The Four-Stroke Cycle
+
+Every session is a combustion cycle.
+
+**Intake** — The session opens. The intake manifold feeds compressed context (the spine, reference files, CLAUDE.md) into the cylinder. The turbocharger provides boost — context that was captured from the previous session's exhaust. Without boost, this is a naturally-aspirated cold start. With boost, the cylinder fills with denser charge.
+
+**Compression** — The context window fills. Every tool call, every file read, every decision adds to the charge. The compression ratio is fixed by the container — the model's context window size determines how much charge the cylinder can hold. A 200k-token window is a higher compression ratio than a 100k-token window. The ratio is a property of the engine, not the fuel.
+
+**Power** — Work happens. Commits are made, PRs are opened, tests are run, documentation is written. This is the combustion event — the moment the compressed context ignites into action. The quality of the power stroke depends on the quality of the charge (good context in, good work out).
+
+**Exhaust** — The session ends. Everything in the context window — every decision, discovery, correction, state change — vents. This is the exhaust gas. In a naturally-aspirated engine, it's wasted. The turbocharger captures it.
+
+### The Turbo Loop (Extended)
+
+| Engine component | Architecture equivalent | Function |
+|---|---|---|
+| Exhaust gas | Session context at close | Energy source — volatile, about to be lost |
+| Turbine | The differential (spine primary vs beta) | Captures exhaust energy — extracts the delta |
+| Compressor | The spine vertebrae | Compresses captured energy into dense, addressable units |
+| Intercooler | Reference files | Cools and stabilises compressed context between sessions |
+| Intake manifold | Prompt injection at session start | Delivers compressed charge to the next cycle |
+| Boost gauge | The tether (three-channel verification) | Three independent pressure readings — disagreement is the diagnostic |
+| Wastegate | Context pressure management | Load shedding when the session approaches compression limits — the system vents excess context pressure before the engine exceeds safe boost. Auth handoffs to Alex are one wastegate event. Deciding not to read a file is another. Any deliberate choice to reduce context load to stay within safe operating pressure is the wastegate opening. |
+| Blow-off valve | Session termination / context window limit | The hard limit. When the context window fills completely, the valve opens and the session ends. Unlike the wastegate (controlled release), this is the safety cutoff. |
+| Compression ratio | Context window size (fixed by model) | How much charge the cylinder can hold. Fixed by the container, not tuneable per session. |
+| Fuel | The prompt | The human's input — intent, methodology, logic, direction. The charge is fuel (prompt) mixed with air (compressed context). Neither combusts alone. |
+| Octane rating | Structural soundness of the prompt | How much compression the fuel can withstand before detonating. Clear methodology, consistent logic, explicit intent = high octane. Vague, contradictory, ambiguous = low octane. |
+| Air-fuel mixture | Ratio of prompt direction to ambient context | Too lean (too little prompt, too much context) and the engine runs hot — the model improvises. Too rich (too much directive, not enough room) and it fouls — over-constrained, no space for combustion. |
+| Knock / detonation | Hallucination | When context compression exceeds what the fuel can handle cleanly, you get uncontrolled pre-ignition. The charge fires before the spark. In an engine, this is knock — combustion happening at the wrong time, in the wrong place, destroying the piston. In an LLM, this is hallucination — the model generating output that isn't grounded in the actual context, because the context pressure exceeded what the prompt could anchor. Knock doesn't mean the engine is broken. It means the engine is being asked to compress more than the fuel can handle. The fix is the same in both cases: reduce boost, retard timing, or improve fuel quality. In context terms: shed load, simplify the task, or run higher-octane prompts. |
+
+### The H6 Flat-6 Boxer
+
+The tether's six implementation layers map to a flat-6 boxer engine — specifically, the 2003 Subaru Liberty's EZ30 H6. In a boxer, cylinders fire in opposing pairs. Each pair balances the other. The vibration cancellation is structural, not tuned.
+
+| Cylinder pair | Tether layers | What they balance |
+|---|---|---|
+| Pair 1 | L0 (Road surface) ↔ L5 (Disagreement register) | The floor and the ceiling. L0 is GitHub's own standards — the minimum. L5 is the log of every time the other layers disagreed — the maximum diagnostic surface. They oppose: one defines what should be true, the other records when it wasn't. |
+| Pair 2 | L1 (Multi-channel verification) ↔ L4 (Structural fingerprinting) | The reading and the shape. L1 reads state through three channels. L4 hashes the structural shape of the codebase. They oppose: one asks "what does the state say?" and the other asks "does the structure match?" |
+| Pair 3 | L2 (Intent-annotated changes) ↔ L3 (Propagation tracking) | The why and the where. L2 records why a change was made. L3 follows where it went. They oppose: one is the cause, the other is the effect. Together they trace the full arc of every change through the system. |
+
+The boxer configuration is not decorative. It means the tether's layers are structurally balanced — each layer has a natural counterpart that checks it from the opposite direction. When one cylinder misfires, its opposing cylinder feels it immediately. That's the vibration — and in the tether, vibration is signal.
+
+### AVCS — Variable Valve Timing
+
+The coolant rotation (S-0013) maps to Subaru's Active Valve Control System. In the EZ30, AVCS adjusts valve timing and lift depending on operating conditions — all six cylinders always fire, but how deeply they breathe varies.
+
+The rotation tiers work the same way:
+
+**Every session** (high RPM, full valve lift) — git operations, security, tests get the deepest inspection. The valves open widest. These systems breathe fully every cycle.
+
+**Weekly** (mid RPM, moderate lift) — dependencies, docs, branches, issues get regular but not constant attention. The valves open moderately. These systems breathe, but not at full depth.
+
+**Monthly** (low RPM, reduced lift) — architecture, performance, community health. Light breathing. The valves open just enough to keep the cylinders alive.
+
+**Quarterly** (idle, minimum lift) — license compliance, repo size, LFS, security posture. Barely breathing. But breathing. The cylinder never stops firing. The valve never fully closes.
+
+This is the critical insight: the rotation doesn't turn systems on and off. It adjusts how deeply they're inspected. Every subsystem fires every session — some just breathe more shallowly. The AVCS doesn't shut cylinders down. It modulates their intake.
+
+This connects back to the mechanic's nose principle (S-0009 in the tether architecture): a mechanic doesn't just read gauges — they listen, smell, feel. The AVCS tiers determine how many senses you bring to each subsystem on each pass. Full-lift inspection uses all three tether channels. Reduced-lift inspection might use only direct observation. But it never uses zero.
+
+### Where the Mapping Breaks
+
+One honest break, one resolved break, and one absence:
+
+**Break 1: Session discontinuity.** A real engine runs continuously — exhaust flows to turbine flows to compressor in an unbroken stream. Sessions are discontinuous. The exhaust doesn't flow to the turbine in real time. It's captured at session close, stored, and injected at next session start. The turbo loop has a gap in it. The intercooler bridges the gap, but it's not the same as continuous flow. This is the fundamental difference between a real turbocharger and a context turbocharger: one runs in real time, the other runs across a discontinuity.
+
+**Resolved: Fuel injection / mixture tuning.** *(Originally listed as a break — closed during the session that wrote this document.)* The prompt is the fuel. The compressed context from the turbo loop is the air. Together they form the charge. This maps with precision:
+
+The octane rating is the structural soundness of the prompt — how much compression it can withstand before detonating. A prompt with clear methodology, consistent logic, and explicit intent is high-octane fuel. It resists knock under high context compression. A vague, contradictory, or ambiguous prompt is low-octane — it detonates early, hallucinating under compression loads that a well-structured prompt handles cleanly.
+
+Fuel injection timing is when and how the prompt enters the cycle. The air-fuel mixture is the ratio of prompt direction to ambient context. Too lean (too little prompt, too much ambient context) and the engine runs hot — the model improvises beyond its grounding. Too rich (too much directive, not enough room for the model to work) and it fouls — over-constrained, choking on instructions, no space for useful combustion.
+
+This means fuel quality is the one variable the human controls directly. Alex can't change the compression ratio (that's the model's context window). He can't change the turbo's efficiency (that's the differential's design). But he can choose what octane to run. Every prompt is a fuel choice.
+
+**Absence: No crankshaft.** The engine model describes individual cycles (sessions) and the turbo loop between them, but doesn't describe what converts the reciprocating motion of individual power strokes into continuous rotational output. In a real engine, that's the crankshaft. In the architecture, the closest thing is the spine itself — converting discrete session outputs into continuous project state. But this mapping is thin. Noted, not forced.
+
+---
+
 ## What's Extractable
 
 If you strip out everything Alex-specific — the H6 stories, the personal repos, the Cowork integration — three ideas survive:
