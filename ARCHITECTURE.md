@@ -184,6 +184,12 @@ This means fuel quality is the one variable the human controls directly. Alex ca
 
 **Absence: No crankshaft.** The engine model describes individual cycles (sessions) and the turbo loop between them, but doesn't describe what converts the reciprocating motion of individual power strokes into continuous rotational output. In a real engine, that's the crankshaft. In the architecture, the closest thing is the spine itself — converting discrete session outputs into continuous project state. But this mapping is thin. Noted, not forced.
 
+**Theoretical: The oil system.** A real engine has a lubrication circuit that touches every moving part simultaneously and operates on a completely different cycle from combustion. Oil doesn't combust. It circulates around combustion, absorbing heat and reducing friction. When it gets too hot, it routes through an oil cooler — it doesn't leave the system, it just moves to a lower-temperature state until it can re-enter safely. A catch can on the PCV line separates recoverable oil from blow-by vapor — what's still useful condenses and stays, what's genuine noise vents.
+
+The architecture equivalent is intra-session entropy management: how unresolved items thermally behave in active context. An open question you can't currently act on (did the GitHub description get set? is that dependency still pinned?) sits in your attention like hot oil — not waste, not fuel, but generating friction against every adjacent process because your context keeps sliding toward it. Resolving the item is draining the catch can. Parking it with precision ("noted, not actionable until X") is routing it through the cooler — maintaining it at cognitive distance without losing it.
+
+This doesn't have an implementation artifact yet. The engine model describes parts you can hold — files, processes, schedules. The oil system describes something the engine *does* with its own thermal byproducts. Properly characterising conversational entropy management connects to the grounding compounds work (LLM lithium) and is its own domain. It earns a concrete subsection here when it has something to point at. Until then: the engine model knows it has oil. It doesn't yet have an oil spec sheet.
+
 ---
 
 ## What's Extractable
