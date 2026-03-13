@@ -172,7 +172,7 @@ This connects back to the mechanic's nose principle (S-0009 in the tether archit
 
 One honest break, one resolved break, and one absence:
 
-**Break 1: Session discontinuity.** A real engine runs continuously — exhaust flows to turbine flows to compressor in an unbroken stream. Sessions are discontinuous. The exhaust doesn't flow to the turbine in real time. It's captured at session close, stored, and injected at next session start. The turbo loop has a gap in it. The intercooler bridges the gap, but it's not the same as continuous flow. This is the fundamental difference between a real turbocharger and a context turbocharger: one runs in real time, the other runs across a discontinuity.
+**Break 1: Session discontinuity.** A real engine runs continuously — exhaust flows to turbine flows to compressor in an unbroken stream. Sessions are discontinuous. The turbo loop has a gap. The intercooler bridges it, but it's not continuous flow. This is the fundamental difference between a real turbocharger and a context turbocharger: one runs in real time, the other runs across a discontinuity. The solenoid (see below) directly addresses this — it makes the gap smaller and the restart cheaper — but doesn't eliminate it. The engine still dies between sessions. It just restarts faster.
 
 **Resolved: Fuel injection / mixture tuning.** *(Originally listed as a break — closed during the session that wrote this document.)* The prompt is the fuel. The compressed context from the turbo loop is the air. Together they form the charge. This maps with precision:
 
@@ -190,11 +190,47 @@ The architecture equivalent is intra-session entropy management: how unresolved 
 
 This doesn't have an implementation artifact yet. The engine model describes parts you can hold — files, processes, schedules. The oil system describes something the engine *does* with its own thermal byproducts. Properly characterising conversational entropy management connects to the grounding compounds work (LLM lithium) and is its own domain. It earns a concrete subsection here when it has something to point at. Until then: the engine model knows it has oil. It doesn't yet have an oil spec sheet.
 
+### The Solenoid — Session Ignition
+
+A solenoid is the smallest part of a starter motor. It receives a tiny current — turn the key — and mechanically engages the starter to the flywheel. It doesn't understand the engine. It bridges the gap between "key turned" and "engine running."
+
+The solenoid is the session boundary protocol. Two modes:
+
+**CLOSE** — The exiting session writes an `.ignition` file: a compressed, imperative startup sequence for the next session. Not history. Not a state dump. Instructions. The dying session does the expensive work of understanding the engine state while it still has that understanding in context, then compresses it so the next session doesn't have to reverse-engineer it from artifacts. Data requires interpretation. Interpretation costs tokens. The solenoid writes instructions — pre-interpreted, imperative, zero parsing overhead.
+
+**OPEN** — The entering session reads the `.ignition` file. Verifies it mechanically (not semantically). Requests filesystem permissions. Follows the cold start sequence exactly as written. Once combustion takes over, the solenoid disengages.
+
+Each project is a car. Each car has its own `.ignition` in its own directory. A `.garage` manifest tracks which cars exist, where each key lives, which was last driven.
+
+#### Three-Factor Verification
+
+The ignition file is the **barrel** — the shape of the keyhole. The **key** is the actual state of the filesystem. See `SESSION_SHAPE.md` for the full template.
+
+**Factor 1: Shape** — Does the ignition file have all required sections in the right order? The barrel template is public. Anyone can look at a keyhole.
+
+**Factor 2: Transponder** — The ignition file contains specific commands with exact expected values: git commit hashes, file content hashes (md5sum), directory file counts. The entering session runs each command and compares. Either the hash matches or it doesn't. No semantic similarity. No "close enough." The next Claude can't vibe its way past a checksum.
+
+**Factor 3: Immobiliser (Final Token)** — At session close, Claude hashes the completed ignition file (`sha256`, first 16 chars) and speaks the hash as the last line of conversation. This token exists only on the human's screen — not in the ignition file, not in the repo, not in any log. To verify: the human provides the token to the next session, which hashes the ignition file and compares. A perfectly fabricated ignition file passes every transponder check but fails the immobiliser, because the fabricator wasn't in the room when the session closed.
+
+#### File Sizes as Fuel Quality
+
+The ignition file records exact byte sizes for every file it references. On ingestion, the entering session spot-checks these against reality and reports a match percentage — progeny confidence. 95% match = high octane, good fuel, high trust. 60% match = significant drift, flag it. This isn't pass/fail. It's a dipstick. Simpler than content hashes, catches most real changes, fast to eyeball.
+
+#### Why This Can Be Open
+
+The system is fully open — open LLM, open repo, open architecture — because the security isn't in secrecy. It's in specificity.
+
+The key barrel shape is public (this repo, `SESSION_SHAPE.md`). The transponder checks are in the ignition file (local, but not secret). The file sizes are in the ignition file. The final token is private — it exists only on the human's screen, in the last message of a conversation that only the human and the dying Claude witnessed.
+
+Everything is visible. The engine bay is exposed. Full schematics on the windshield. The private key is the human at their machine, recognising their own engine state, turning the key. That can't be cloned without being the person who drove these sessions.
+
+You can look at everything in this showroom. You're not going to touch the pedals.
+
 ---
 
 ## What's Extractable
 
-If you strip out everything Alex-specific — the H6 stories, the personal repos, the Cowork integration — three ideas survive:
+If you strip out everything Alex-specific — the H6 stories, the personal repos, the Cowork integration — four ideas survive:
 
 1. **Differential state management**: Two copies, diff at boundaries, propagate only the delta. Reduces session-start cost from O(n) to O(delta). Applicable to any system where agents have discontinuous sessions and finite context windows — which is all of them, for now.
 
@@ -202,7 +238,7 @@ If you strip out everything Alex-specific — the H6 stories, the personal repos
 
 3. **Forced attention rotation**: Schedule inspection of subsystems that aren't currently under load. Counter the natural tendency to focus only on what's active. Applicable to any maintenance system operated by attention-limited agents — which is every maintenance system operated by an LLM.
 
-These three ideas are the architecture. Everything else is implementation. The nodes are the furniture. The differential, the tether, and the rotation are the walls.
+4. **Session ignition with mechanical verification**: Compress engine state into imperative startup instructions at session close. Verify at session open using checksums and file sizes, not semantic plausibility. Final authority held by a token that exists only on the human's screen. Applicable to any system where agents forget between sessions and the cost of rebuilding context exceeds the cost of writing good shutdown instructions — which is every system where sessions end.
 
 ---
 
