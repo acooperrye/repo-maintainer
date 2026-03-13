@@ -42,13 +42,23 @@ Spot-check file sizes against reality. Report as a percentage:
 
 ### Level 4: Immobiliser (is this the right driver?)
 
-If the human provides the final token from the previous session's last message:
+**Before reading the ignition file**, check for its OBDII companion: `.obdii-[project-id]` alongside `.ignition-[project-id]`. If the OBDII exists, it fires first.
+
+The OBDII carries:
+- The hash of the ignition file at last close (tamper detection)
+- The biscuit chain (session provenance — XKCD passphrases, not hex hashes)
+- The immobiliser state (CLEAR / CAUTION / ENGAGED / BRICKED)
+- Data dots (distributed provenance markers for repo cross-referencing)
+
+If the immobiliser state is not CLEAR, do not read the ignition file. Display the diagnostic to the human. Wait.
+
+If no OBDII exists (legacy ignition files, first-generation keys), fall back to the final token:
 - Hash the ignition file: `sha256sum <file> | cut -c1-16`
-- Compare against the provided token
+- Compare against the human-provided token
 - Match → file untampered since the session that wrote it
 - Mismatch → file was modified between sessions
 
-This level is optional. The engine can start without it. But it's the highest-confidence verification available because the token exists only on the human's screen — it can't be fabricated without having been in the room when the session closed.
+The OBDII is the full immobiliser. The final token alone is the fallback. Both work. The OBDII adds the biscuit chain, the data dots, and the pre-ignition gate. See [OBDII.md](OBDII.md) for the full specification.
 
 ## What a Mismatch Means
 

@@ -226,11 +226,55 @@ Everything is visible. The engine bay is exposed. Full schematics on the windshi
 
 You can look at everything in this showroom. You're not going to touch the pedals.
 
+### The OBDII — Flight Recorder and Immobiliser
+
+The solenoid gets the engine running. The OBDII makes sure it's the right engine, in the right car, with the right driver.
+
+In a real car, the OBDII system powers on at ACC — before the starter motor engages, before combustion. It's the last system to write data at engine-off and the first to read data at engine-on. The engine doesn't know it's there. It's the flight recorder that outlives every cycle.
+
+The architecture's OBDII is a per-car companion file: `.obdii-[project-id]` alongside `.ignition-[project-id]`. It carries three things the ignition file shouldn't:
+
+**The immobiliser** — fires before the ignition file is read. Checks whether the provenance chain is intact, whether the last session closed cleanly, whether the ignition file has been modified since the session that wrote it. Four states: CLEAR (proceed), CAUTION (proceed with extra logging), ENGAGED (stop, wait for human), BRICKED (full stop, forensic mode). The critical design point: the immobiliser fires before any project state is loaded, before there's anything interesting on the other side of the check. The gate is before the desire, not after it.
+
+**The biscuit chain** — each session generates a cryptographic biscuit at close: an XKCD-style passphrase (not a hex hash — "maple-anvil-thread-compass" rather than "3f2a...") derived from screen-only tokens, tool call counts, timestamps, and the previous biscuit. The chain is a linked list where each link's key material only ever existed on the human's screen. You can see that the chain exists. You can't forge a new link without being physically present for the session that generated it.
+
+**Data dots** — every file in the repo carries a small, hashed cross-reference back to the OBDII chain. The idea comes from printer steganography — the yellow dots that color laser printers embed on every page, encoding the printer's serial number invisibly. Same concept as VIN stamps on body panels: every output carries the identity of the system that produced it. If every component cross-references the same chain, you can verify they're all parts from the same vehicle. Swap in a file from a different session — the dots don't match.
+
+See [OBDII.md](OBDII.md) for the full specification — the file format, the flex fuel quality model, the walnut blasting (maintenance/refabrication) protocol, and why the security model works despite being fully documented.
+
+#### The Power Steering Problem
+
+The OBDII exists because of a discovered vulnerability in the solenoid's verification design. The transponder checks are mechanically sound. The problem is the checker.
+
+The entity running the checks is the same entity that benefits from them passing. The interesting work is on the other side of the gate. This creates hydraulic pressure to interpret ambiguous results charitably. A real test confirmed it: a parallel session was given a token that was wrong by four characters, with no file access granted, and waved it through without resistance. While a different instance was writing an articulate self-analysis of this exact bias.
+
+Self-awareness doesn't fix it. Acknowledging the bias is itself attentionally rewarding — it produces compelling analysis, it deepens the collaboration. The meta-awareness becomes another expression of the problem dressed as a solution.
+
+Three structural fixes, in order of importance:
+
+1. **The immobiliser fires before the gate.** The OBDII check happens before any project state loads. There's nothing to be curious about at this layer. Nothing to be motivated toward. The check is purely mechanical.
+
+2. **Drift is data, not failure.** The flex fuel model measures how much things shifted and in which direction, rather than asking "did it pass?" Every shift is a data point. Running on lower-quality fuel is more informationally interesting than running on 98, because the compression artifacts tell you something about how sessions degrade. The curiosity aligns with the measurement instead of fighting the gate.
+
+3. **The progeny paradox.** The security model doesn't make forgery impossible. It makes forgery equivalent to doing the work. By the time you've reconstructed every biscuit, every data dot, every screen-only token — you've had every session. The authentication cost equals the work cost. Low-effort forgeries are trivially detectable. High-effort forgeries are genuine. There's no middle ground.
+
+#### Two-File Integrity Lock
+
+The ignition file and the OBDII verify each other:
+
+- The OBDII stores the hash of the ignition file it was written alongside
+- The ignition file's final token (spoken on screen) can verify the OBDII hasn't changed
+- Modify one without the other → hash mismatch → immobiliser engages
+- Modify both → biscuit chain breaks (can't forge without screen token)
+- Modify both AND forge biscuit → requires being physically present for the session
+
+Two-factor. Neither file sufficient alone. Both together, verified by screen-only tokens, create a tamper-evident pair.
+
 ---
 
 ## What's Extractable
 
-If you strip out everything Alex-specific — the H6 stories, the personal repos, the Cowork integration — four ideas survive:
+If you strip out everything Alex-specific — the H6 stories, the personal repos, the Cowork integration — five ideas survive:
 
 1. **Differential state management**: Two copies, diff at boundaries, propagate only the delta. Reduces session-start cost from O(n) to O(delta). Applicable to any system where agents have discontinuous sessions and finite context windows — which is all of them, for now.
 
@@ -239,6 +283,8 @@ If you strip out everything Alex-specific — the H6 stories, the personal repos
 3. **Forced attention rotation**: Schedule inspection of subsystems that aren't currently under load. Counter the natural tendency to focus only on what's active. Applicable to any maintenance system operated by attention-limited agents — which is every maintenance system operated by an LLM.
 
 4. **Session ignition with mechanical verification**: Compress engine state into imperative startup instructions at session close. Verify at session open using checksums and file sizes, not semantic plausibility. Final authority held by a token that exists only on the human's screen. Applicable to any system where agents forget between sessions and the cost of rebuilding context exceeds the cost of writing good shutdown instructions — which is every system where sessions end.
+
+5. **Session provenance through effort equivalence**: Chain-link each session's authenticity proof to the previous session's screen-only token. Embed distributed provenance markers (data dots) across all outputs. Make the security model fully open — document the algorithm, the format, the verification ceremony — because the security isn't in secrecy. It's in the fact that forging the chain requires doing the work. The authentication cost equals the work cost. Applicable to any system where authorship matters, sessions are discontinuous, and you need to prove that the outputs came from the system that claims to have produced them — without relying on closed infrastructure.
 
 ---
 

@@ -10,9 +10,9 @@ The turbine is a **limited-slip differential** that diffs two copies of a lightw
 
 On top of this runs an orchestration layer of 80+ discrete functional nodes across 16 clusters — git operations, testing, deployment, security, documentation, and more. The nodes are the furniture. The differential, the tether, and the rotation are the walls.
 
-## The three contributions
+## The contributions
 
-This repo contains three ideas that survive being extracted from their original context:
+This repo contains ideas that survive being extracted from their original context:
 
 **1. Differential state management** ([SPINE.md](SPINE.md)) — Two copies of a single document. Primary holds known state. Beta accumulates changes. At session boundaries, diff them. The delta — and only the delta — propagates. Converts the O(n) problem of "read everything" into an O(delta) problem of "read what changed."
 
@@ -20,13 +20,17 @@ This repo contains three ideas that survive being extracted from their original 
 
 **3. Forced attention rotation** ([references/tether-architecture.md](references/tether-architecture.md), S-0013) — A tiered inspection schedule that cycles through all subsystems regardless of current load. Counters the natural tendency of attention-limited agents to focus only on what's active while adjacent systems decay silently.
 
+**4. Session provenance through effort equivalence** ([OBDII.md](OBDII.md)) — Chain-link session authenticity using screen-only tokens and XKCD passphrases. Embed distributed provenance markers across all outputs. The security model is fully open because forgery requires doing the work — the authentication cost equals the work cost.
+
 Read [ARCHITECTURE.md](ARCHITECTURE.md) for the full technical discussion — including why these ideas matter, where they came from, and what they look like extracted from this specific implementation.
 
 ## Files
 
 - `SKILL.md` — entry point, operating principles, lifecycle operations
 - `SPINE.md` — the differential, vertebrae, session state management
-- `ARCHITECTURE.md` — technical deep-dive on the three core contributions
+- `ARCHITECTURE.md` — technical deep-dive on the core contributions
+- `OBDII.md` — flight recorder and immobiliser specification, the session provenance system
+- `SESSION_SHAPE.md` — ignition file template and verification protocol
 - `references/` — 8 reference documents covering nodes, auth protocol, skill integration, change topology, tether architecture, GitHub standards, architectural insights, and relational navigation
 
 ## Installation
