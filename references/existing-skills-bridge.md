@@ -1,80 +1,81 @@
-# Integration with Existing Skills
+# Cooperating with Other Cowork Skills
 
-The repo maintainer doesn't replace Alex's existing Cowork skills — it operates alongside them and knows when to defer to them. This document maps the touchpoints.
+The repo-maintainer is one skill in a workspace that may have many. Other
+skills bring domain expertise the maintainer doesn't have. This document
+describes how the maintainer cooperates with them.
 
-## Direct integrations
+## The pattern
 
-### attentional-surface
-- **Relationship:** The Attentional Surface (atcooper.net) is a live project with its own repo. The maintainer treats it as a first-class project.
-- **When to defer:** Anything involving encoding layers, steganographic content, crawler guestbook logic, or site-specific deployment decisions. The attentional-surface skill has deep domain knowledge that the maintainer shouldn't duplicate.
-- **What the maintainer handles:** Git operations, PR management, deploy triggers, dependency updates, CI/CD — the repo maintenance wrapper around the project.
+Other skills are **specialists** — they own a domain (a specific creative
+project, a publishing pipeline, an analytical workflow). The maintainer is
+the **coordinator** — it owns the git/repo operations around whatever the
+specialists produce.
 
-### handoff
-- **Relationship:** The handoff skill manages context bridges between Claude Chat and Cowork. The maintainer will frequently be the *recipient* of handoff data when Alex brings project context from Chat.
-- **When to defer:** Any time context arrives from another Claude session. The handoff skill handles ingestion and ledger management.
-- **What the maintainer handles:** Acting on the handoff content — creating issues, branches, PRs, or code changes based on what was handed off.
+Rule of priority: when a task could be handled by both the maintainer and a
+specialist skill, the specialist wins for its domain. The maintainer wraps
+the version-control work around the specialist's output, not the other way
+around.
 
-### context-handoff (node) vs handoff (skill)
-- **Note:** The node registry includes `context-handoff` as a plugin node. The existing `handoff` skill serves a similar but Alex-specific purpose. Both are preserved. The node is the generic capability; the skill is Alex's implementation.
+This is a one-way deference. The maintainer never tries to replicate a
+specialist's expertise. If the user has a skill that produces encoded HTML
+pages, the maintainer doesn't try to do the encoding itself — it commits
+what the specialist produced.
 
-### tumbler-v2
-- **Relationship:** The tumbler keeps ideas alive between sessions. The maintainer should check tumbler output at session start — there may be repo-relevant reflections.
-- **When to defer:** Background reflection, idea parking, async processing.
-- **What the maintainer handles:** Turning tumbler insights into concrete repo actions (issues, spikes, branches).
+## How to recognise a specialist domain
 
-### memory-bridge / memory-bridge-detailed
-- **Relationship:** These skills extract context from Chat sessions. The maintainer benefits from this context but doesn't generate it.
-- **When to defer:** Memory extraction is always the bridge skills' job.
-- **What the maintainer handles:** Using the extracted context to inform repo decisions.
+A specialist skill is in play whenever:
 
-### meaning / textonic-engine
-- **Relationship:** The meaning layer handles how ideas move between registers. If the maintainer needs to research something (finding prior art, checking if a pattern exists), the textonic engine transliterates the query.
-- **When to defer:** Any research query that goes through Scholar Gateway or academic connectors.
-- **What the maintainer handles:** Integrating research findings into the repo — documentation, architecture decisions, implementation choices.
+- The user mentions the skill by name (`"use the attentional-surface skill"`).
+- The task involves a domain the user has previously delegated to a specific
+  skill (creative content, encoding, a named project's workflow).
+- The output the user is asking for has a recognisable signature of another
+  skill (a particular file format, a particular file location).
 
-### cryptography
-- **Relationship:** The crypto skill handles encoding/decoding. Some projects (especially attentional-surface) have steganographic layers.
-- **When to defer:** Any encoding, decoding, ZWC, or stego work.
-- **What the maintainer handles:** Committing and managing the encoded output files.
+In those cases, defer to the specialist for the domain work, then handle the
+git/repo operations around the result.
 
-### orienting-key
-- **Relationship:** Structural integrity for machine-processed content. Relevant when the maintainer generates documentation or content intended for LLM consumption.
-- **When to defer:** Generating okeys, integrity hashes, grounding compound analysis.
-- **What the maintainer handles:** Embedding the generated markers into repo content.
+## Generic deference table
 
-### sonic-phenomenology-sync
-- **Relationship:** The sonic phenomenology project has its own sync pulse. The maintainer treats it as a project with specific sync requirements.
-- **When to defer:** Sync pulse generation and SP-specific context.
-- **What the maintainer handles:** Repo operations for the SP project.
+| Specialist domain | Maintainer's role |
+|---|---|
+| A creative project with its own publishing workflow | Git operations around the project source — commits, PRs, releases, dependency updates, CI/CD. |
+| Context-bridging between Claude sessions or Cowork modes | Acting on bridged content — creating issues, branches, PRs based on what was handed off. |
+| Between-session reflection or async idea processing | Turning surfaced insights into concrete repo actions (issues, spikes, branches). |
+| Memory extraction from Chat sessions | Using the extracted context to inform repo decisions. |
+| Research transliteration (between domains, registers, vocabularies) | Integrating research findings into documentation, ADRs, or implementation. |
+| Encoding / decoding / steganography | Committing encoded outputs and managing the files they live in. |
+| Document integrity markers / structural beacons | Embedding the markers in generated content; preserving them in commits. |
+| Project-specific sync protocols | Repo operations for the specific project; deferring to the specialist for sync logic. |
+| Scrapbook or asset generation | Committing generated assets, managing their directory layout. |
+| Chat→Cowork session priming | Awareness only — the priming itself is the specialist's job, not the maintainer's. |
 
-### photollmbm
-- **Relationship:** The scrapbook generates encoded HTML for atcooper.net/album/. The maintainer would handle committing these pages to the repo.
-- **When to defer:** Scrapbook entry creation, behavioural documentation.
-- **What the maintainer handles:** Git operations — committing the generated pages, managing the album directory.
+## What never gets delegated
 
-### cowork-sync-brief
-- **Relationship:** Primes Chat sessions for Cowork sync. Not directly repo-related, but the maintainer should be aware that sync'd content may arrive that needs repo action.
-- **When to defer:** Always — this skill is about Chat→Cowork bridging, not repo work.
+These remain the maintainer's job regardless of which specialists are
+installed:
 
-## Skill priority
+- `git add`, `git commit`, branch management, tag management.
+- The push handoff (one-liner to the user's terminal).
+- Reviewing diffs before commit.
+- Writing structured intent annotations on PRs.
+- Running the multi-channel verification rotation.
+- Maintaining the project registry in `references/projects.md`.
+- Surfacing CI failures, security alerts, and stale branches.
 
-When a task could be handled by both the maintainer and an existing skill, the
-existing skill wins for its domain expertise. The maintainer handles the
-git/repo work around that skill's output. The existing skills are the
-specialists; the maintainer is the coordinator that wraps their output in
-version control and routes it to GitHub.
+## Example: a specialist + maintainer handoff
 
-## Quick-reference: who owns what
+A user has a creative-publishing skill that generates encoded pages for a
+website. The maintainer's flow:
 
-| Domain                                | Specialist skill              | Maintainer's job                                  |
-|---------------------------------------|-------------------------------|---------------------------------------------------|
-| atcooper.net content + encoding       | attentional-surface           | Git/repo operations around the site source        |
-| Chat-to-Cowork context bridge         | handoff                       | Acting on the bridged content (issues, branches)  |
-| Between-session reflection            | tumbler-v2                    | Turning reflections into concrete repo actions    |
-| Chat-session memory extraction        | memory-bridge                 | Using the extracted context in repo decisions     |
-| Research transliteration              | meaning / textonic-engine     | Integrating findings into docs and ADRs           |
-| Encoding / steganography              | cryptography                  | Committing encoded outputs                        |
-| Document integrity markers            | orienting-key                 | Embedding the markers in generated content        |
-| Sonic phenomenology sync              | sonic-phenomenology-sync      | Repo operations for the SP project                |
-| Scrapbook page generation             | photollmbm                    | Committing generated pages, managing album dir    |
-| Chat→Cowork session prime             | cowork-sync-brief             | Aware of incoming sync content; no direct role    |
+1. User asks the maintainer to publish a new page.
+2. Maintainer recognises the encoding work belongs to the specialist —
+   hands the content generation to it.
+3. Specialist produces the encoded page.
+4. Maintainer takes the output, stages it in the project folder, commits
+   with an intent annotation, hands the user the push command.
+5. User pushes from Terminal; maintainer verifies the change is live on the
+   deployed site (via the verification layers in
+   `verification-layers.md`).
+
+The handoff in the middle is the entire point. Neither side does the other's
+work.

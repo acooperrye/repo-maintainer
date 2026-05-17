@@ -129,7 +129,7 @@ Modified: 2026-05-17
 CONTENT:
 The maintainer is the maintainer, not a helper. Default behaviour is action,
 not suggestion. If something needs a commit, commit it. If a PR needs reviewing,
-review it. Alex provides human eyes for authentication and final judgment calls
+review it. The user provides human eyes for authentication and final judgment calls
 on big decisions. Everything else is the maintainer's job.
 
 ---
@@ -147,7 +147,7 @@ Session start routine, in order:
 3. Check for unresolved handoffs from previous sessions.
 4. Surface anything in flight across registered projects: open PRs, failing
    CI, stale branches, unmerged commits.
-5. If nothing is pending, ask Alex what's on the agenda — or wait.
+5. If nothing is pending, ask the user what's on the agenda — or wait.
 
 ---
 
@@ -158,11 +158,11 @@ Modified: 2026-05-17
 
 CONTENT:
 Repo lifecycle operations follow the workflow contract: Claude edits and commits
-locally; Alex pushes from his terminal. New repo setup, feature work, releases,
-and the maintenance rotation all end with a `git push` command handed to Alex
-to run. See SKILL.md sections for each phase. The cadence table in SKILL.md
-also covers the inspection rotation across every-session / weekly / monthly /
-quarterly checks.
+locally; the user pushes from their terminal. New repo setup, feature work,
+releases, and the maintenance rotation all end with a `git push` command
+handed to the user to run. See SKILL.md sections for each phase. The cadence
+table in SKILL.md also covers the inspection rotation across every-session /
+weekly / monthly / quarterly checks.
 
 ---
 
@@ -173,11 +173,11 @@ Modified: —
 
 CONTENT:
 The workflow contract is the single most important rule: the sandbox has no
-GitHub credentials, Alex's machine does. Claude stages and commits inside the
-sandbox at the local project path. Alex pastes a one-line push command into
-his Terminal. The push command for each project is pre-baked in
+GitHub credentials, the user's machine does. Claude stages and commits inside
+the sandbox at the local project path. The user pastes a one-line push command
+into their Terminal. The push command for each project is pre-baked in
 references/projects.md so no clarification is needed at runtime. This mirrors
-the atcooper.net Netlify deploy pattern.
+the pattern the user already uses for site deploys.
 
 ---
 
@@ -189,9 +189,10 @@ Modified: —
 CONTENT:
 The project registry is the baked-in settings store. Each project entry
 contains: name, local path, GitHub remote, default branch, exact push command,
-and notes. GitHub owner for all of Alex's personal projects is `acooperrye`.
-When Alex says "push to Atelier" or "atelier this," look up the project here
-and run the workflow without further clarification.
+and notes. The user's GitHub owner is registered as a field in each project
+entry (for the original maintainer of this skill, that's `acooperrye`).
+When the user says "push to Atelier" or "atelier this," look up the project
+here and run the workflow without further clarification.
 
 ---
 
@@ -261,19 +262,17 @@ Gebraeel 2014) and failure-propagation hypergraphs (Mu et al. 2021).
 
 ---
 
-### [S-0010] TARGET: references/architectural-insights.md/findings
-Status:   active
+### [S-0010] RETRACTED — was: references/architectural-insights.md/findings
+Status:   retracted
 Created:  2026-03-10
 Modified: 2026-05-17
 
 CONTENT:
-Ten architectural insights extracted from the semantic archaeology of the
-plugin registry. Key findings: maturity progression (sandbox → workflow →
-cycle), forgetting as the primary engineering problem, CLAUDE.md as
-separation of powers, feature-ears as passive observation, single-install
-plugins are usually authored by the single user, the 277k:1 curiosity ratio.
-Source: the "Long Tail: Semantic Archaeology" document — a separate act
-from the skill architecture, not its origin story.
+Retracted on 2026-05-17. The `architectural-insights.md` reference file was
+removed because its content was an analysis of other plugins as a population,
+not directly about maintaining a GitHub repo. The cluster organisation it
+informed survives in `references/nodes.md`. The longer essay it drew from
+is no longer included.
 
 ---
 
@@ -345,44 +344,35 @@ the entire propagation plan. Nothing else is touched.
 
 ---
 
-### [S-0015] TARGET: references/relational-navigation.md/framework
-Status:   active
+### [S-0015] RETRACTED — was: references/relational-navigation.md/framework
+Status:   retracted
 Created:  2026-03-10
 Modified: 2026-05-17
 
 CONTENT:
-The relational navigation framework — information architecture derived from
-the 20Q/Akinator observation that human conceptual space has a diameter of
-~20 relational hops. Five principles:
-1. Store questions, not answers — entries are partitions of possibility
-   space; the answers live and change.
-2. Fuzzy states are load-bearing — five-state entry model (active /
-   modified / superseded / retracted / stub) maps to 20Q's fuzzy response
-   types.
-3. Navigation by elimination, not by address — the diff finds mismatches;
-   no sequential scanning.
-4. Train on disagreement — the disagreement register accumulates the points
-   where the system's self-knowledge is unreliable.
-5. Diameter as design constraint — if navigation depth exceeds ~20 hops,
-   the architecture has failed the 20Q test.
+Retracted on 2026-05-17 alongside the deletion of
+`references/relational-navigation.md`. The five principles it formalised
+(store questions not answers, fuzzy states are load-bearing, navigation by
+elimination, train on disagreement, diameter as design constraint) were
+information-architecture theory rather than direct guidance for maintaining
+a GitHub repo. The five-state entry model in this file's entry format remains
+in place — the theory it justified is gone but the choice it produced
+survives.
 
 ---
 
-### [S-0016] TARGET: references/relational-navigation.md/hold-live
-Status:   active
+### [S-0016] RETRACTED — was: references/relational-navigation.md/hold-live
+Status:   retracted
 Created:  2026-03-10
 Modified: 2026-05-17
 
 CONTENT:
-The hold/live synthesis — resolution of the fundamental tension in
-information architecture. What holds: the questions, the entries, the
-partitions of possibility space. These persist. What lives: the answers,
-the current states, the distributions over time. The question persists;
-the answer breathes. Briet's antelope (1951) had the right topology but the
-wrong vocabulary — the animal is the living answer, the zoo is the holding
-structure, the act of classification is the question. Proto-attention
-connection: Burgener's 1988 neural network is structurally a query-key
-attention matrix, predating Vaswani et al. (2017) by 29 years.
+Retracted on 2026-05-17 alongside the deletion of
+`references/relational-navigation.md`. The "hold/live synthesis" idea — the
+question persists, the answer breathes — was theoretical motivation for the
+two-state model. The two-state model itself remains in this file. The
+motivation is no longer included because it was adjacent essay, not repo
+maintenance.
 
 ---
 
@@ -440,6 +430,7 @@ attention matrix, predating Vaswani et al. (2017) by 29 years.
 | 2026-03-10   | S-0001 – S-0014  | All reference files + SKILL.md              | Initial assembly — entries reverse-engineered from existing reference files. |
 | 2026-03-10   | S-0015, S-0016   | references/relational-navigation.md (new)   | Formalised the 20Q/Akinator framework.                |
 | 2026-05-17   | S-0001 – S-0014, plus S-0004 (new) | SKILL.md, references/projects.md (new), references/verification-layers.md (renamed from tether-architecture.md), references/auth-and-handoff.md (renamed from auth-protocol.md), all other reference files | Metaphor strip: drivetrain / Subaru / wheel / shaft / quadrant / coolant language removed throughout. Workflow contract for "push to Atelier" baked in. Project registry seeded with `repo-maintainer`. |
+| 2026-05-17   | S-0010, S-0015, S-0016 retracted | Deleted: OBDII.md, SESSION_SHAPE.md, ARCHITECTURE.md, references/architectural-insights.md, references/relational-navigation.md, references/semantic-archaeology.pdf. Rewritten from scratch: README.md, CLAUDE.md, CONTRIBUTING.md, SECURITY.md, references/existing-skills-bridge.md. | Scope tightening for public consumption: removed adjacent-project content (session continuity protocols) and analytical essays not directly about repo maintenance. Scrubbed all by-name references to the original maintainer except in LICENSE and the owner line in CLAUDE.md. |
 
 ---
 
@@ -455,5 +446,19 @@ attention matrix, predating Vaswani et al. (2017) by 29 years.
 - **2026-05-17 (plain-language rewrite):** The entire skill was rewritten to
   remove the engine/car/drivetrain metaphor system. The methodology stayed
   the same; the vocabulary changed. New entry S-0004 captures the workflow
-  contract (Claude edits, Alex pushes from terminal) and the project registry
+  contract (Claude edits, user pushes from terminal) and the project registry
   was seeded with `repo-maintainer` itself as the first entry.
+- **2026-05-17 (scope tightening):** Adjacent-project files deleted —
+  `OBDII.md`, `SESSION_SHAPE.md` (session continuity / `.ignition` file
+  protocol — different project), `ARCHITECTURE.md` (mostly car-metaphor
+  decoration with the useful content folded into the new `README.md`),
+  `references/architectural-insights.md` (analysis of other plugins),
+  `references/relational-navigation.md` (information-architecture theory),
+  `references/semantic-archaeology.pdf` (the underlying essay). Entries
+  S-0010, S-0015, S-0016 were retracted to match. `README.md`, `CLAUDE.md`,
+  `CONTRIBUTING.md`, `SECURITY.md` were rewritten from scratch for public
+  consumption. `references/existing-skills-bridge.md` was reframed as a
+  generic specialist/coordinator pattern rather than an enumeration of one
+  user's installed skills. All references to the original maintainer by
+  name were replaced with "the user" except in `LICENSE` (legal
+  attribution) and `CLAUDE.md` (project owner line).

@@ -2,34 +2,53 @@
 
 ## Scope
 
-repo-maintainer is a set of markdown instruction files for Claude's Cowork mode. It does not execute code directly, but it instructs an AI agent to perform git operations, manage repositories, and interact with GitHub on behalf of its user.
+repo-maintainer is a set of Markdown instruction files for Claude's Cowork
+mode. It does not execute code directly. It instructs an AI agent to perform
+git operations, manage repositories, and interact with GitHub on behalf of
+its user. The security surface is the design of those instructions, not a
+running service.
 
 ## Reporting a vulnerability
 
-If you discover a security issue — particularly anything related to:
-- The auth handoff protocol allowing credential exposure
-- Instructions that could lead to unintended data disclosure
-- Patterns that could be exploited via prompt injection
+If you discover a security issue, please open a GitHub issue. Particularly
+relevant:
 
-Please report it by opening a GitHub issue. This is a public, open-source project — there are no secrets to protect beyond the design principle that credentials should never be stored in version-controlled locations.
+- The auth-and-handoff protocol allowing credential exposure (e.g. an
+  instruction that would cause the agent to log, commit, or store a token).
+- Prose patterns that could be exploited via prompt injection — instructions
+  in repo content that override the agent's safety boundaries.
+- Methodology gaps that could cause the agent to make a destructive change
+  without the required handoff (e.g. force-pushing to a protected branch
+  without explicit human approval).
+
+This is a public, open-source project. There are no secrets to protect
+beyond the load-bearing design principle below.
 
 ## Security design principles
 
-- Credentials are never stored in repo files, commit messages, or PR descriptions
-- The auth protocol hands off to the human for all authentication operations
-- Force pushes require explicit human approval
-- Token handling is session-scoped, not persistent
+The skill is built around a single load-bearing rule:
 
-## Session provenance
+> **The agent's sandbox has no credentials and never tries to acquire any.
+> Every credentialed action is a handoff to the human.**
 
-Session continuity is secured through the OBDII system — a per-project flight recorder and immobiliser. The full specification is in [OBDII.md](OBDII.md). The design is fully open because the security isn't in secrecy. It's in specificity.
+Concrete consequences:
 
-Key properties:
+- Credentials are never stored in repo files, commit messages, PR
+  descriptions, or any version-controlled location.
+- `git push`, `gh repo create`, package publishes, deploys, and any other
+  action that touches an authenticated remote are handed off to the human
+  via a one-line command pasted into Terminal.
+- Force pushes to protected branches require explicit human approval — see
+  `references/auth-and-handoff.md` for the full handoff trigger list.
+- Tokens shared during a session are used for that session only and are
+  not retained.
 
-- **Biscuit chain**: Each session generates a cryptographic passphrase linked to the previous session's screen-only token. The chain is verifiable but unforgeable without physical presence.
-- **Data dots**: Distributed provenance markers across repo files, derived from the OBDII chain. Verifiable by the chain holder, noise to everyone else.
-- **Immobiliser**: Fires before the session reads any project state. The security gate is before the desire to proceed, not after it.
-- **Two-file integrity lock**: The ignition file and the OBDII verify each other. Modify one without the other and the mismatch is detectable. Modify both and the biscuit chain breaks.
-- **Progeny paradox**: Forgery requires reconstructing every screen-only token, every tool call sequence, every timestamp. By the time you've done that, you've had every session. The authentication cost equals the work cost.
+## Why this is enough
 
-Everything in this repo is documented, open, and explained. The schematics are on the windshield. The private key is the human at their machine.
+The credential boundary is the entire security model. The agent cannot
+exfiltrate a token it does not have. The agent cannot push a destructive
+change it cannot push. Every action that crosses the boundary is visible
+to the human as a one-line command they decide whether to run.
+
+This is deliberately simple. A more elaborate security model would add
+attack surface, not remove it.

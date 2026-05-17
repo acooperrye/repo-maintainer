@@ -174,7 +174,7 @@ The maintainer's **new repo setup** checklist should produce:
 | 9  | Secret scanning + push protection                                       | Both enabled                                |
 | 10 | CLAUDE.md                                                               | Project-specific instructions for future Claude sessions |
 
-For Alex's projects specifically:
+For projects in the original installation specifically (the user can edit or remove this list when forking):
 - Enable push protection (prevents accidental credential commits).
 - Use rulesets if available (layered rules, better visibility).
 - Keep repos under 1 GB (the site assets for atcooper.net need monitoring).

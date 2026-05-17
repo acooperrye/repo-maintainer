@@ -1,15 +1,17 @@
 # Project Registry
 
-The baked-in list of Alex's projects, their local paths on his Mac, their GitHub
-remotes, and the exact push command for each. When Alex says "push this to
+The baked-in list of the user's projects, their local paths, their GitHub
+remotes, and the exact push command for each. When the user says "push this to
 Atelier" or "atelier this," the maintainer resolves the project from this file
 in one lookup. No clarifying questions.
 
-**GitHub owner for all projects below:** `acooperrye`
+**GitHub owner for all projects below:** `acooperrye` (the maintainer of this
+skill in its original installation; fork users replace with their own).
 
-**Workflow reminder:** the maintainer edits files in the local path, stages and
-commits inside the sandbox, then hands the push command to Alex. Alex pastes it
-into his Terminal. Alex's machine has the credentials; the sandbox does not.
+**Workflow reminder:** the maintainer edits files in the local path, stages
+and commits inside the sandbox, then hands the push command to the user. The
+user pastes it into their Terminal. The user's machine has the credentials;
+the sandbox does not.
 
 ---
 
@@ -26,13 +28,13 @@ Each project below uses this structure:
 | GitHub remote  | https://github.com/acooperrye/<repo-name>                   |
 | SSH remote     | git@github.com:acooperrye/<repo-name>.git                   |
 | Default branch | main                                                        |
-| Push command   | The exact one-liner Alex pastes into Terminal               |
+| Push command   | The exact one-liner the user pastes into Terminal           |
 | Notes          | Quirks, deploy hooks, related skills, related memory files  |
 ```
 
-The push command is intentionally repeated verbatim for each project so Alex
-can copy it without thinking. Quote the path because most of his folder names
-contain spaces or emoji.
+The push command is intentionally repeated verbatim for each project so the
+user can copy it without thinking. Quote the path because most folder names
+on a real machine contain spaces or emoji.
 
 ---
 
@@ -70,7 +72,7 @@ cd "/Users/acr/Documents/Git Repo Maintainer/repo-maintainer" && \
 ```
 
 If a partial `.git` directory already exists from a sandbox session and is
-causing trouble, Alex can wipe it with:
+causing trouble, the user can wipe it with:
 
 ```bash
 cd "/Users/acr/Documents/Git Repo Maintainer/repo-maintainer" && \
@@ -109,15 +111,16 @@ cd "/Users/acr/Documents/Atelier" && git push origin main
 cd "/Users/acr/Documents/Atelier" && git add . && git commit -m "<message>" && git push origin main
 ```
 
-When Alex says "push to Atelier" or "atelier this," this is the entry to use —
-**not** the `repo-maintainer` entry above.
+When the user says "push to Atelier" or "atelier this," this is the entry to
+use — **not** the `repo-maintainer` entry above.
 
 ---
 
 ## Adding a new project
 
-When Alex starts working on a new project and pushes it for the first time,
-add a new section here using the format above. The minimum information needed:
+When the user starts working on a new project and pushes it for the first
+time, add a new section here using the format above. The minimum information
+needed:
 
 1. **Name** — short, lowercase, kebab-case. Match the GitHub repo name where
    possible.
@@ -128,8 +131,8 @@ add a new section here using the format above. The minimum information needed:
    explicitly if different.
 5. **Push command** — the exact `cd "<path>" && git push origin <branch>`
    line.
-6. **Notes** — anything that would otherwise require asking Alex twice. Related
-   skills, deploy quirks, secret names, CI hooks, sister projects.
+6. **Notes** — anything that would otherwise require asking the user twice.
+   Related skills, deploy quirks, secret names, CI hooks, sister projects.
 
 The aim: once a project is in this file, the maintainer never asks "which repo?"
 or "where does this live?" again. The cost of a clarifying question is paid once,
@@ -137,16 +140,17 @@ at registration time.
 
 ---
 
-## Related sites Alex deploys (not GitHub-primary, but cross-referenced here)
+## Related sites (not GitHub-primary, but cross-referenced here)
 
 ### atcooper.net
 
-Not maintained primarily by this skill — `attentional-surface` owns the domain.
-Cross-referenced because the workflow pattern below is what this skill mirrors.
+Not maintained primarily by this skill — a different Cowork skill owns the
+domain content. Cross-referenced because the workflow pattern below is what
+this skill mirrors.
 
 | Field          | Value                                                                       |
 |----------------|-----------------------------------------------------------------------------|
 | Local path     | `/Users/acr/Documents/🖼️ Artmaking/Attentional Surface/atcooper-net`        |
 | Deploy target  | Netlify (not GitHub-primary)                                                |
 | Deploy command | `cd "/Users/acr/Documents/🖼️ Artmaking/Attentional Surface/atcooper-net" && npx netlify-cli deploy --prod --dir=public` |
-| Notes          | Auth is on Alex's machine, not the sandbox. Alex runs the deploy. See memory file `atcooper-net-deploy.md`. Same pattern as the GitHub push workflow this skill uses. |
+| Notes          | Auth is on the user's machine, not the sandbox. The user runs the deploy. Same pattern as the GitHub push workflow this skill uses. |

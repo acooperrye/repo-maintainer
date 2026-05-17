@@ -160,7 +160,7 @@ The rotation doesn't wait to be asked. The maintainer surfaces findings:
 > "The test suite has gotten 40% slower over the last month — the three PRs
 > that added the most time were X, Y, Z. Want me to investigate?"
 
-Alex shouldn't have to remember to check. That's the whole point of the
+The user shouldn't have to remember to check. That's the whole point of the
 rotation.
 
 ---
@@ -211,11 +211,11 @@ baseline (L0).
 - The rotation adds ~10 minutes per session for the surface scan; deeper tiers
   cost more but happen less often.
 - Structural fingerprinting is automatable once set up. Near-zero ongoing cost.
-- The disagreement register is maintained by the maintainer, not Alex. Zero
-  cost to Alex.
+- The disagreement register is maintained by the maintainer, not the user. Zero
+  cost to the user.
 
-The entire system is designed so that Alex pays nothing on a per-change basis.
-The maintainer absorbs the overhead. Alex gets a repo that can explain its own
+The entire system is designed so that the user pays nothing on a per-change basis.
+The maintainer absorbs the overhead. The user gets a repo that can explain its own
 state through multiple independent channels, and that surfaces problems before
 they become incidents.
 
