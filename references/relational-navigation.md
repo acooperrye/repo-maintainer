@@ -66,35 +66,35 @@ Burgener applied to OpenAI for collaboration. He received a form rejection. His 
 
 ---
 
-## What This Means for the Spine
+## What This Means for the SPINE Model
 
-The spine's architecture already exhibits several properties of relational navigation, arrived at independently:
+The SPINE model in this skill already exhibits several properties of relational navigation, arrived at independently:
 
-### Vertebrae are questions, not answers
+### Entries are questions, not answers
 
-Each vertebra in the spine is a unit of knowledge framed as a claim that can be verified: "The maintainer is the maintainer, not a helper" (S-0001). "Default to universal-dev when uncertain" (S-0004). These function like 20Q's internal questions — they partition the possibility space of "what is the state of this system?" Each vertebra, when checked, yields one of several states.
+Each entry in SPINE.md is a unit of knowledge framed as a claim that can be verified: "The maintainer is the maintainer, not a helper" (S-0001). "Look up the project in the registry before asking" (S-0005). These function like 20Q's internal questions — they partition the possibility space of "what is the state of this system?" Each entry, when checked, yields one of several states.
 
 ### Five states, not two
 
-A vertebra can be: active, modified, superseded, retracted, or stub. This maps directly to the fuzzy truth values:
+An entry can be: active, modified, superseded, retracted, or stub. This maps directly to the fuzzy truth values:
 
-| Vertebra state | 20Q equivalent | Akinator equivalent |
-|---------------|---------------|-------------------|
-| active | Yes | Yes |
-| retracted | No | No |
-| modified | Sometimes | Probably |
-| superseded | Sometimes (was true, new truth exists) | Probably Not |
-| stub | Unknown | Don't Know |
+| Entry state | 20Q equivalent                          | Akinator equivalent |
+|-------------|-----------------------------------------|---------------------|
+| active      | Yes                                     | Yes                 |
+| retracted   | No                                      | No                  |
+| modified    | Sometimes                               | Probably            |
+| superseded  | Sometimes (was true, new truth exists)  | Probably Not        |
+| stub        | Unknown                                 | Don't Know          |
 
 The five-state model wasn't designed to match 20Q. It emerged from the requirements of the system. But the convergence is diagnostic — it suggests that five states is approximately the right resolution for tracking knowledge that changes.
 
-### Traction check is three-valued
+### The drift check is three-valued
 
-The traction check asks: does the wheel match the shaft? The answer is one of three: matches beta (traction confirmed), matches primary but not beta (pre-propagation), or matches neither (drift fault). This is Yes/Not Yet/Error — a three-valued logic that again exceeds the binary.
+The drift check asks: does the target reference section match the entry? The answer is one of three: matches the working copy (in sync), matches the anchor but not the working copy (pre-propagation), or matches neither (drift fault). This is Yes / Not Yet / Error — a three-valued logic that again exceeds the binary.
 
-### The differential IS relational navigation
+### The two-state diff IS relational navigation
 
-The LSD model doesn't navigate the spine spatially (read from top to bottom) or temporally (check most recent first). It navigates relationally: the speed difference between two shafts points to exactly the vertebrae that need attention. You don't search. You don't scan. You diff, and the diff tells you where to go. This is the same non-spatial convergence that 20Q uses — you don't browse a catalogue, you follow relations until you arrive.
+The diff doesn't navigate SPINE.md spatially (read from top to bottom) or temporally (check most recent first). It navigates relationally: the difference between the two copies points to exactly the entries that need attention. You don't search. You don't scan. You diff, and the diff tells you where to go. This is the same non-spatial convergence that 20Q uses — you don't browse a catalogue, you follow relations until you arrive.
 
 ---
 
@@ -104,31 +104,31 @@ The LSD model doesn't navigate the spine spatially (read from top to bottom) or 
 
 The fundamental unit of a relational navigation system is not a fact, a document, or a record. It is a *question* — a partition of possibility space. The answer to the question at any given moment is the system's current state. The distribution of answers over time is the system's history. The question persists; the answers live.
 
-**In the spine:** Each vertebra is a question the system asks itself. "What is the identity of the maintainer?" (S-0001). "What is the session start routine?" (S-0002). The CONTENT field is the current answer. The status field is the confidence level.
+**In SPINE.md:** Each entry is a question the system asks itself. "What is the identity of the maintainer?" (S-0001). "What is the session start routine?" (S-0002). The CONTENT field is the current answer. The status field is the confidence level.
 
 ### Principle 2: Fuzzy states are load-bearing
 
 Binary systems (true/false, exists/doesn't, pass/fail) lose information at every junction. Fuzzy states (sometimes, probably, unknown, modified, stub) preserve the uncertainty that makes navigation possible. A "sometimes" is more informative than a forced "yes" or "no" because it encodes the distribution — the same way 20Q's "sometimes" responses carry more information-theoretic weight per bit than definitive ones.
 
-**In the spine:** The stub state is the most important state. A stub says "this question exists but we don't know the answer yet." Deleting the stub would lose the question. Guessing would corrupt the answer. The stub holds the question open, which holds the space in navigable conceptual territory.
+**In SPINE.md:** The stub state is the most important state. A stub says "this question exists but we don't know the answer yet." Deleting the stub would lose the question. Guessing would corrupt the answer. The stub holds the question open, which holds the space in navigable conceptual territory.
 
 ### Principle 3: Navigation by elimination, not by address
 
 You don't find information by knowing its address (shelf 4, row 7, column 3). You find it by asking questions that eliminate what it isn't. Each question halves (approximately) the remaining space. Twenty questions on a billion objects — because log₂(10⁹) ≈ 30 and human questions are better than random binary splits.
 
-**In the spine:** The differential doesn't address vertebrae by ID and read them sequentially. It overlays two states and the *differences* point to exactly the right vertebrae. The navigation is eliminative — everything that matches is eliminated from attention. Only the mismatches remain, and those are exactly where you need to go.
+**In SPINE.md:** The diff doesn't address entries by ID and read them sequentially. It overlays two states and the *differences* point to exactly the right entries. The navigation is eliminative — everything that matches is eliminated from attention. Only the mismatches remain, and those are exactly where you need to go.
 
 ### Principle 4: Train on disagreement
 
 The system improves not when people agree but when they disagree. Disagreement reveals the boundaries of concepts, the edge cases, the "sometimes" zones. A system trained only on consensus has sharp boundaries and blind spots. A system trained on disagreement has fuzzy boundaries and coverage.
 
-**In the spine:** The disagreement register (tether architecture, Layer 5) is the equivalent of 20Q's crowd-sourced training. Every time two gauges disagree about the same state, the disagreement is recorded. Over time, this builds a map of where the system's self-knowledge is unreliable — the "sometimes" zones.
+**In SPINE.md:** The disagreement register (see `verification-layers.md`, Layer 5) is the equivalent of 20Q's crowd-sourced training. Every time two channels disagree about the same state, the disagreement is recorded. Over time, this builds a map of where the system's self-knowledge is unreliable — the "sometimes" zones.
 
 ### Principle 5: Diameter as design constraint
 
-If human conceptual space has a diameter of ~20, then any navigation system that requires more than ~20 hops to reach any piece of information from any starting point is worse than a toy from 2003. This is a hard constraint: the maximum depth of any hierarchy, the maximum chain of links, the maximum number of questions needed to locate any vertebra.
+If human conceptual space has a diameter of ~20, then any navigation system that requires more than ~20 hops to reach any piece of information from any starting point is worse than a toy from 2003. This is a hard constraint: the maximum depth of any hierarchy, the maximum chain of links, the maximum number of questions needed to locate any entry.
 
-**In the spine:** Currently 14 vertebrae. Any vertebra is reachable in 1 hop from the spine (read the ID, go to the quadrant). The quadrant alignment means maximum navigation depth is 2: spine → quadrant → content. Well within the diameter constraint. As the spine grows, this constraint should be monitored — if navigation depth exceeds ~20, the architecture has failed the 20Q test.
+**In SPINE.md:** Currently 16 entries. Any entry is reachable in 1 hop from SPINE.md (read the ID, go to the target). The target convention means maximum navigation depth is 2: SPINE.md → target → content. Well within the diameter constraint. As SPINE.md grows, this constraint should be monitored — if navigation depth exceeds ~20, the architecture has failed the 20Q test.
 
 ---
 
@@ -136,9 +136,9 @@ If human conceptual space has a diameter of ~20, then any navigation system that
 
 The relational navigation framework resolves the hold/live tradeoff through the same mechanism 20Q uses:
 
-**What holds:** The questions. The vertebrae. The partitions of possibility space. These are structural and persistent. They don't change when the answers change. "Is the build passing?" is a question that holds indefinitely, regardless of whether the build is currently passing.
+**What holds:** The questions. The entries. The partitions of possibility space. These are structural and persistent. They don't change when the answers change. "Is the build passing?" is a question that holds indefinitely, regardless of whether the build is currently passing.
 
-**What lives:** The answers. The current states. The distributions of responses over time. The disagreement register. These change continuously. The build passes or fails. The vertebra is active or modified or retracted. The gauges agree or disagree. The answers are the living tissue of the system.
+**What lives:** The answers. The current states. The distributions of responses over time. The disagreement register. These change continuously. The build passes or fails. The entry is active or modified or retracted. The channels agree or disagree. The answers are the living tissue of the system.
 
 **The question persists. The answer breathes.**
 
@@ -148,11 +148,11 @@ This is what Briet was reaching for when she put the antelope in the zoo. The an
 
 ## Open Questions
 
-1. **Can the spine's vertebrae be formally treated as information-theoretic questions?** Each vertebra partitions the state space of the repo-maintainer. The information gain of checking a vertebra is measurable (how much uncertainty does it resolve?). Could vertebrae be ordered by information gain, the way 20Q orders its questions?
+1. **Can SPINE.md's entries be formally treated as information-theoretic questions?** Each entry partitions the state space of the repo-maintainer. The information gain of checking an entry is measurable (how much uncertainty does it resolve?). Could entries be ordered by information gain, the way 20Q orders its questions?
 
-2. **What is the diameter of the repo-maintainer's conceptual space?** Currently trivial (14 vertebrae, max depth 2). As the system grows to cover 80+ nodes across 16 clusters, what navigation depth emerges? Does it stay within 20?
+2. **What is the diameter of the repo-maintainer's conceptual space?** Currently trivial (16 entries, max depth 2). As the system grows to cover 80+ nodes across 16 clusters, what navigation depth emerges? Does it stay within 20?
 
-3. **Can the disagreement register be formalised as a training signal?** 20Q improves from disagreement. Can the repo-maintainer improve from gauge disagreement — not just logging it, but using it to refine which vertebrae exist and what questions they ask?
+3. **Can the disagreement register be formalised as a training signal?** 20Q improves from disagreement. Can the repo-maintainer improve from channel disagreement — not just logging it, but using it to refine which entries exist and what questions they ask?
 
 4. **Burgener's data.** 10 million synaptic connections. 35 million training games. The patent is public. The data is locked. The man says he's open to collaboration. The man's SSL cert is expired. Someone should talk to him.
 

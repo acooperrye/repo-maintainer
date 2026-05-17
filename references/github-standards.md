@@ -1,6 +1,6 @@
 # GitHub Official Standards
 
-Distilled from GitHub's own documentation on repository best practices, security, branching, community health, and file management. This is the baseline — what GitHub itself says a well-maintained repo should have. The repo-maintainer treats this as the floor, not the ceiling.
+Distilled from GitHub's own documentation on repository best practices, security, branching, community health, and file management. This is the baseline — what GitHub itself says a well-maintained repo should have. The maintainer treats this as the floor, not the ceiling. The additional layers (verification, intent annotation, propagation tracking) sit on top of everything below; see `verification-layers.md` for those.
 
 Source: https://docs.github.com/en/repositories/creating-and-managing-repositories/best-practices-for-repositories and all linked pages.
 
@@ -161,22 +161,27 @@ If nothing found in the repo, falls back to the org's `.github` repo.
 
 The maintainer's **new repo setup** checklist should produce:
 
-1. README.md — what, why, how, who
-2. LICENSE — appropriate for the project
-3. CONTRIBUTING.md — how to participate
-4. SECURITY.md — how to report vulnerabilities
-5. .gitignore — language/framework appropriate
-6. CI config — GitHub Actions workflow for tests and linting
-7. Branch protection on main — require PR reviews, require status checks
-8. Dependabot enabled — alerts + security updates + version updates
-9. Secret scanning + push protection enabled
-10. CLAUDE.md — project-specific instructions for future Claude sessions
+| #  | File / setting                                                          | Notes                                       |
+|----|-------------------------------------------------------------------------|---------------------------------------------|
+| 1  | README.md                                                               | What, why, how, who                         |
+| 2  | LICENSE                                                                 | Appropriate for the project                 |
+| 3  | CONTRIBUTING.md                                                         | How to participate                          |
+| 4  | SECURITY.md                                                             | How to report vulnerabilities               |
+| 5  | .gitignore                                                              | Language/framework appropriate              |
+| 6  | CI config                                                               | GitHub Actions workflow for tests + lint    |
+| 7  | Branch protection on `main`                                             | Require PR reviews, require status checks   |
+| 8  | Dependabot enabled                                                      | Alerts + security updates + version updates |
+| 9  | Secret scanning + push protection                                       | Both enabled                                |
+| 10 | CLAUDE.md                                                               | Project-specific instructions for future Claude sessions |
 
 For Alex's projects specifically:
-- Enable push protection (prevents accidental credential commits)
-- Use rulesets if available (layered rules, better visibility)
-- Keep repos under 1 GB (the site assets for atcooper.net need monitoring)
-- Issue templates with structured forms for bug reports and feature requests
-- PR template that includes an intent annotation field (ties into change-topology.md)
+- Enable push protection (prevents accidental credential commits).
+- Use rulesets if available (layered rules, better visibility).
+- Keep repos under 1 GB (the site assets for atcooper.net need monitoring).
+- Issue templates with structured forms for bug reports and feature requests.
+- PR template that includes an intent annotation field (ties into
+  `change-topology.md`).
 
-The maintainer handles items 1-9 autonomously. Item 10 is the letter to the next amnesiac self.
+The maintainer handles items 1–9 autonomously. Item 10 is the project-level
+note to the next Claude session — what conventions to follow, what's already
+been decided, what to avoid.

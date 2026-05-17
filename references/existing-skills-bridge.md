@@ -58,4 +58,23 @@ The repo maintainer doesn't replace Alex's existing Cowork skills — it operate
 
 ## Skill priority
 
-When a task could be handled by both the repo maintainer and an existing skill, the existing skill wins for its domain expertise. The maintainer handles the git/repo wrapper around that skill's output. Think of it as: the skills are the specialists, the maintainer is the general contractor who keeps the house in order.
+When a task could be handled by both the maintainer and an existing skill, the
+existing skill wins for its domain expertise. The maintainer handles the
+git/repo work around that skill's output. The existing skills are the
+specialists; the maintainer is the coordinator that wraps their output in
+version control and routes it to GitHub.
+
+## Quick-reference: who owns what
+
+| Domain                                | Specialist skill              | Maintainer's job                                  |
+|---------------------------------------|-------------------------------|---------------------------------------------------|
+| atcooper.net content + encoding       | attentional-surface           | Git/repo operations around the site source        |
+| Chat-to-Cowork context bridge         | handoff                       | Acting on the bridged content (issues, branches)  |
+| Between-session reflection            | tumbler-v2                    | Turning reflections into concrete repo actions    |
+| Chat-session memory extraction        | memory-bridge                 | Using the extracted context in repo decisions     |
+| Research transliteration              | meaning / textonic-engine     | Integrating findings into docs and ADRs           |
+| Encoding / steganography              | cryptography                  | Committing encoded outputs                        |
+| Document integrity markers            | orienting-key                 | Embedding the markers in generated content        |
+| Sonic phenomenology sync              | sonic-phenomenology-sync      | Repo operations for the SP project                |
+| Scrapbook page generation             | photollmbm                    | Committing generated pages, managing album dir    |
+| Chat→Cowork session prime             | cowork-sync-brief             | Aware of incoming sync content; no direct role    |

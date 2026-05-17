@@ -34,7 +34,7 @@ For the maintainer: the ability to read compiled output and understand what it w
 
 This reframes plan-guardian from a project management tool to a thermodynamic function. Every line of code is an opportunity to deviate from intent. Scope creep is entropy. The plan-guardian doesn't enforce rules — it fights the natural tendency of systems to drift from their purpose.
 
-For the maintainer: the coolant check. The Subaru metaphor. The plan-guardian is what prevents the maintainer from being so deep in git operations that it forgets the project was supposed to ship something.
+For the maintainer: plan-guardian is what prevents being so deep in git operations that the project's shipping intent gets lost. It is the anti-entropy check on the inspection rotation in `verification-layers.md`.
 
 ## Insight 5: The Hardworking Admission
 
