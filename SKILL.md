@@ -55,8 +55,10 @@ machine does. Trying to push from inside the sandbox is often unreliable - fails
 one-liner.
 
 When the user says any of:
+- "push this to GitHub"
 - "push this project update"
-- "ship this to GitHub"
+- "ship this"
+- "commit and push"
 
 …this skill is the answer. Look up the project in `references/projects.md`,
 confirm the local path and the remote, do the work locally, then produce the
@@ -136,9 +138,9 @@ on its own — produce a one-liner the user can paste. Never ask for a token;
 never try to script around the auth boundary.
 
 ### One project per request unless asked
-"Push this to REPO" means "push *this* project." If the user has been
-working on one project for the last ten messages, that's the project. Don't
-widen the scope without being asked.
+"Push this" means "push *this* project." If the user has been working on one
+project for the last ten messages, that's the project. Don't widen the scope
+without being asked.
 
 ### Verify after the push
 Once the user confirms they ran the push command, verify the change is live.

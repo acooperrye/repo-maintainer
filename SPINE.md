@@ -191,8 +191,9 @@ The project registry is the baked-in settings store. Each project entry
 contains: name, local path, GitHub remote, default branch, exact push command,
 and notes. The user's GitHub owner is registered as a field in each project
 entry (for the original maintainer of this skill, that's `acooperrye`).
-When the user says "push to Atelier" or "atelier this," look up the project
-here and run the workflow without further clarification.
+When the user says "push this" or names a registered project, look up the
+entry in `references/projects.md` and run the workflow without further
+clarification.
 
 ---
 
@@ -429,8 +430,9 @@ maintenance.
 |--------------|------------------|---------------------------------------------|--------------------------------------------------------|
 | 2026-03-10   | S-0001 – S-0014  | All reference files + SKILL.md              | Initial assembly — entries reverse-engineered from existing reference files. |
 | 2026-03-10   | S-0015, S-0016   | references/relational-navigation.md (new)   | Formalised the 20Q/Akinator framework.                |
-| 2026-05-17   | S-0001 – S-0014, plus S-0004 (new) | SKILL.md, references/projects.md (new), references/verification-layers.md (renamed from tether-architecture.md), references/auth-and-handoff.md (renamed from auth-protocol.md), all other reference files | Metaphor strip: drivetrain / Subaru / wheel / shaft / quadrant / coolant language removed throughout. Workflow contract for "push to Atelier" baked in. Project registry seeded with `repo-maintainer`. |
+| 2026-05-17   | S-0001 – S-0014, plus S-0004 (new) | SKILL.md, references/projects.md (new), references/verification-layers.md (renamed from tether-architecture.md), references/auth-and-handoff.md (renamed from auth-protocol.md), all other reference files | Metaphor strip: drivetrain / Subaru / wheel / shaft / quadrant / coolant language removed throughout. Workflow contract baked in. Project registry seeded with `repo-maintainer` as the canonical example. |
 | 2026-05-17   | S-0010, S-0015, S-0016 retracted | Deleted: OBDII.md, SESSION_SHAPE.md, ARCHITECTURE.md, references/architectural-insights.md, references/relational-navigation.md, references/semantic-archaeology.pdf. Rewritten from scratch: README.md, CLAUDE.md, CONTRIBUTING.md, SECURITY.md, references/existing-skills-bridge.md. | Scope tightening for public consumption: removed adjacent-project content (session continuity protocols) and analytical essays not directly about repo maintenance. Scrubbed all by-name references to the original maintainer except in LICENSE and the owner line in CLAUDE.md. |
+| 2026-05-17   | (no entry changes) | SKILL.md, SPINE.md, references/projects.md | Personal-project scrub. Removed the second project entry that was specific to the original maintainer's personal prototypes (not relevant to the public skill bundle). projects.md now carries only the seed entry; forkers add their own personal projects in their local copies. |
 
 ---
 
@@ -448,6 +450,13 @@ maintenance.
   the same; the vocabulary changed. New entry S-0004 captures the workflow
   contract (Claude edits, user pushes from terminal) and the project registry
   was seeded with `repo-maintainer` itself as the first entry.
+- **2026-05-17 (personal-project scrub):** The second project entry in
+  `references/projects.md` (the original maintainer's personal prototype
+  repo) was removed because it isn't relevant to the public skill bundle.
+  The user-specific push command for that project moved to the user's
+  per-session memory, where personal data belongs. `references/projects.md`
+  now ships with only the seed entry; forkers add their own projects in
+  their local copies.
 - **2026-05-17 (scope tightening):** Adjacent-project files deleted —
   `OBDII.md`, `SESSION_SHAPE.md` (session continuity / `.ignition` file
   protocol — different project), `ARCHITECTURE.md` (mostly car-metaphor

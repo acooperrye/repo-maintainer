@@ -1,17 +1,18 @@
 # Project Registry
 
 The baked-in list of the user's projects, their local paths, their GitHub
-remotes, and the exact push command for each. When the user says "push this to
-Atelier" or "atelier this," the maintainer resolves the project from this file
-in one lookup. No clarifying questions.
-
-**GitHub owner for all projects below:** `acooperrye` (the maintainer of this
-skill in its original installation; fork users replace with their own).
+remotes, and the exact push command for each. When the user says "push this"
+or names a registered project, the maintainer resolves the entry from this
+file in one lookup. No clarifying questions.
 
 **Workflow reminder:** the maintainer edits files in the local path, stages
 and commits inside the sandbox, then hands the push command to the user. The
 user pastes it into their Terminal. The user's machine has the credentials;
 the sandbox does not.
+
+When forking this skill, replace the seed entry below with your own projects.
+Personal project lists belong in this file in your local fork, *not* in the
+public upstream — the upstream carries only the seed example.
 
 ---
 
@@ -24,9 +25,9 @@ Each project below uses this structure:
 
 | Field          | Value                                                       |
 |----------------|-------------------------------------------------------------|
-| Local path     | /Users/acr/Documents/.../<project-folder>                   |
-| GitHub remote  | https://github.com/acooperrye/<repo-name>                   |
-| SSH remote     | git@github.com:acooperrye/<repo-name>.git                   |
+| Local path     | /absolute/path/to/<project-folder>                          |
+| GitHub remote  | https://github.com/<owner>/<repo-name>                      |
+| SSH remote     | git@github.com:<owner>/<repo-name>.git                      |
 | Default branch | main                                                        |
 | Push command   | The exact one-liner the user pastes into Terminal           |
 | Notes          | Quirks, deploy hooks, related skills, related memory files  |
@@ -40,10 +41,11 @@ on a real machine contain spaces or emoji.
 
 ## Projects
 
-### repo-maintainer
+### repo-maintainer (seed entry)
 
-The skill you're reading right now. This is the registry's first entry and the
-test case for the workflow.
+The skill you're reading right now. This entry is the example for how a
+project gets registered. Forkers should keep this entry as-is (so the
+self-maintenance loop keeps working) and add their own projects below it.
 
 | Field          | Value                                                                       |
 |----------------|-----------------------------------------------------------------------------|
@@ -52,7 +54,7 @@ test case for the workflow.
 | SSH remote     | `git@github.com:acooperrye/repo-maintainer.git`                             |
 | Default branch | `main`                                                                      |
 | Push command   | See block below                                                             |
-| Notes          | The local folder is also a Cowork skill source. The bundled skill at `~/Library/Application Support/Claude/.../skills/repo-maintainer/` is a copy that gets refreshed by the plugin loader. Source of truth is the local path, which also pushes to GitHub. |
+| Notes          | The local folder is also a Cowork skill source. The bundled skill at `~/Library/Application Support/Claude/.../skills/repo-maintainer/` is a copy refreshed by the plugin loader. Source of truth is the local path, which also pushes to GitHub. |
 
 **Standard push (after Claude has staged + committed):**
 
@@ -84,39 +86,7 @@ cd "/Users/acr/Documents/Git Repo Maintainer/repo-maintainer" && \
 
 ---
 
-### atelier
-
-Prototypes and interactive artifacts from The Attentional Surface
-collaboration. Public repo. Distinct from this `repo-maintainer` skill —
-they are separate projects with separate push commands.
-
-| Field          | Value                                                                       |
-|----------------|-----------------------------------------------------------------------------|
-| Local path     | `/Users/acr/Documents/Atelier`                                              |
-| GitHub remote  | https://github.com/acooperrye/atelier                                       |
-| SSH remote     | `git@github.com:acooperrye/atelier.git`                                     |
-| Default branch | `main`                                                                      |
-| Push command   | See block below                                                             |
-| Notes          | Public repo. Description: "The Atelier — prototypes and interactive artifacts from The Attentional Surface collaboration." Subprojects so far: `karyotype-terrain/`, `kok-cycle/`, `llm-euthymia/`, `pentatonic/`. Clone uses HTTPS so it works with the same `gh` auth that pushes `repo-maintainer`. |
-
-**Standard push (after Claude has staged + committed):**
-
-```bash
-cd "/Users/acr/Documents/Atelier" && git push origin main
-```
-
-**Full commit + push one-liner** (for when Claude tells you exactly what changed):
-
-```bash
-cd "/Users/acr/Documents/Atelier" && git add . && git commit -m "<message>" && git push origin main
-```
-
-When the user says "push to Atelier" or "atelier this," this is the entry to
-use — **not** the `repo-maintainer` entry above.
-
----
-
-## Adding a new project
+## Adding a new project (in your local fork)
 
 When the user starts working on a new project and pushes it for the first
 time, add a new section here using the format above. The minimum information
@@ -125,8 +95,7 @@ needed:
 1. **Name** — short, lowercase, kebab-case. Match the GitHub repo name where
    possible.
 2. **Local path** — full absolute path, quoted if it contains spaces or emoji.
-3. **GitHub remote** — `https://github.com/acooperrye/<repo-name>` unless the
-   repo is under an org instead of a personal account.
+3. **GitHub remote** — the full URL.
 4. **Default branch** — usually `main`; record `master` or anything else
    explicitly if different.
 5. **Push command** — the exact `cd "<path>" && git push origin <branch>`
@@ -134,23 +103,10 @@ needed:
 6. **Notes** — anything that would otherwise require asking the user twice.
    Related skills, deploy quirks, secret names, CI hooks, sister projects.
 
-The aim: once a project is in this file, the maintainer never asks "which repo?"
-or "where does this live?" again. The cost of a clarifying question is paid once,
-at registration time.
+The aim: once a project is in this file (in your fork), the maintainer never
+asks "which repo?" or "where does this live?" again. The cost of a
+clarifying question is paid once, at registration time.
 
----
-
-## Related sites (not GitHub-primary, but cross-referenced here)
-
-### atcooper.net
-
-Not maintained primarily by this skill — a different Cowork skill owns the
-domain content. Cross-referenced because the workflow pattern below is what
-this skill mirrors.
-
-| Field          | Value                                                                       |
-|----------------|-----------------------------------------------------------------------------|
-| Local path     | `/Users/acr/Documents/🖼️ Artmaking/Attentional Surface/atcooper-net`        |
-| Deploy target  | Netlify (not GitHub-primary)                                                |
-| Deploy command | `cd "/Users/acr/Documents/🖼️ Artmaking/Attentional Surface/atcooper-net" && npx netlify-cli deploy --prod --dir=public` |
-| Notes          | Auth is on the user's machine, not the sandbox. The user runs the deploy. Same pattern as the GitHub push workflow this skill uses. |
+Reminder: keep your personal additions in your local fork, not in any PR
+back to the public upstream. Per-user paths and remotes don't belong in the
+distributed skill.
