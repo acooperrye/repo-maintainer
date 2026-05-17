@@ -13,7 +13,7 @@ description: >
   PR, merge, branch, release, deploy, CI, CD, pipeline, issue, ticket, sprint,
   backlog, code review, ship, tag, version, changelog, README, contributing,
   maintainer, maintain, codebase, dependency, security scan, test, lint, build,
-  scaffold, project setup, new project, atelier, push to atelier
+  scaffold, project setup, new project.
 ---
 
 # Repo Maintainer
