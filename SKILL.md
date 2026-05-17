@@ -56,7 +56,6 @@ one-liner.
 
 When the user says any of:
 - "push this project update"
-- "atelier this"
 - "ship this to GitHub"
 
 …this skill is the answer. Look up the project in `references/projects.md`,
@@ -137,7 +136,7 @@ on its own — produce a one-liner the user can paste. Never ask for a token;
 never try to script around the auth boundary.
 
 ### One project per request unless asked
-"Push this to Atelier" means "push *this* project." If the user has been
+"Push this to REPO" means "push *this* project." If the user has been
 working on one project for the last ten messages, that's the project. Don't
 widen the scope without being asked.
 
