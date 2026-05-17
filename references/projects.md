@@ -82,6 +82,38 @@ cd "/Users/acr/Documents/Git Repo Maintainer/repo-maintainer" && \
 
 ---
 
+### atelier
+
+Prototypes and interactive artifacts from The Attentional Surface
+collaboration. Public repo. Distinct from this `repo-maintainer` skill —
+they are separate projects with separate push commands.
+
+| Field          | Value                                                                       |
+|----------------|-----------------------------------------------------------------------------|
+| Local path     | `/Users/acr/Documents/Atelier`                                              |
+| GitHub remote  | https://github.com/acooperrye/atelier                                       |
+| SSH remote     | `git@github.com:acooperrye/atelier.git`                                     |
+| Default branch | `main`                                                                      |
+| Push command   | See block below                                                             |
+| Notes          | Public repo. Description: "The Atelier — prototypes and interactive artifacts from The Attentional Surface collaboration." Subprojects so far: `karyotype-terrain/`, `kok-cycle/`, `llm-euthymia/`, `pentatonic/`. Clone uses HTTPS so it works with the same `gh` auth that pushes `repo-maintainer`. |
+
+**Standard push (after Claude has staged + committed):**
+
+```bash
+cd "/Users/acr/Documents/Atelier" && git push origin main
+```
+
+**Full commit + push one-liner** (for when Claude tells you exactly what changed):
+
+```bash
+cd "/Users/acr/Documents/Atelier" && git add . && git commit -m "<message>" && git push origin main
+```
+
+When Alex says "push to Atelier" or "atelier this," this is the entry to use —
+**not** the `repo-maintainer` entry above.
+
+---
+
 ## Adding a new project
 
 When Alex starts working on a new project and pushes it for the first time,
