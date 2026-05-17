@@ -50,12 +50,11 @@ repo.
 ```
 
 The reason for the split: the sandbox has no GitHub credentials. The user's
-machine does. Trying to push from inside the sandbox always fails with
-"Authentication required". Don't try. Stage, commit, then hand the user the
+machine does. Trying to push from inside the sandbox is often unreliable - fails with
+"Authentication required". Instead: Stage, commit, then hand the user the
 one-liner.
 
 When the user says any of:
-- "push this to Atelier"
 - "push this project update"
 - "atelier this"
 - "ship this to GitHub"
